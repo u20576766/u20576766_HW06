@@ -1,0 +1,110 @@
+﻿@model IPagedList<u20576766_HW06.Models.product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<br />
+<div class="container" style="float:inline-start;">
+    <div class="col-3">
+        <h2>Products</h2>
+    </div>
+    <div class="col-6">
+        <p>
+            @using (Html.BeginForm("Index", "products", FormMethod.Get))
+            {
+                <input type="text" name="search" placeholder="Search Product" class="" />
+                <input type="submit" value="Search" class="btn btn-outline-info" />
+            }
+        </p>
+    </div>
+</div>
+
+<br />
+
+<div class="container-fluid">
+    
+    <p>
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#productModal">Create</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Year
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Brand
+                </th>
+                <th>
+                    Category
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.product_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.model_year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.list_price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.brand.brand_name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.category.category_name)
+                </td>
+                <td>
+                    <div id="edit">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.product_id, })
+                    </div>
+                    |
+                    <div id="details">
+                        @Html.ActionLink("Details", "Details", new { id = item.product_id })
+                    </div>
+                     |
+                    <div id="delete">
+                        @Html.ActionLink("Delete", "Delete", new { id = item.product_id })
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <br />
+    @Html.PagedListPager(Model, time => Url.Action("Index", "products", new { time, search = Request.QueryString["Search"] }))
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+
+</div>
+
+
+@section Script{
+    
+    @*<script type="text/javascript">
+        $(document).ready(function () {
+            $("#edit").click(function (e) {
+
+                $("#myModal").modal("show")
+            })
+        });
+    </script>*@
+    }

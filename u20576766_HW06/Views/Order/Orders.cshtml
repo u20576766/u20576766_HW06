@@ -1,0 +1,80 @@
+﻿@model IPagedList<u20576766_HW06.Models.order_items>
+@{
+    ViewBag.Title = "Orders";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<br />
+<h1 style="text-align:center">Orders</h1>
+<div style="text-align:center;">
+    <p>
+        @using (Html.BeginForm("Index", "products", FormMethod.Get))
+        {
+            <input type="text" name="search" placeholder="Search Product" class="" />
+            <input type="submit" value="Search" class="btn btn-outline-info" />
+        }
+    </p>
+    <br />
+
+    <div>
+        @foreach (var ord in Model)
+        {
+            <h3>Order @ord.order_id - @ord.order.order_date.ToShortDateString()</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Product Name
+                        </th>
+                        <th>
+                            List Price
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (var info in Model)
+                {
+                    <tr>
+                        <th>
+                            @info.product.product_name
+                        </th>
+                        <th>
+                            @info.list_price
+                        </th>
+                        <th>
+                            @info.quantity
+                        </th>
+                        <th>
+                            @info.quantity * @info.list_price
+                        </th>
+                    </tr>
+                }
+
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                        Grand Total:
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </table>
+            <br />
+        }
+
+    </div>
+
+    <div class="container" style="text-align:center;">
+        @Html.PagedListPager(Model, tale => Url.Action("Index", "products", new { tale, search = Request.QueryString["Search"] }))
+    </div>
+</div>
